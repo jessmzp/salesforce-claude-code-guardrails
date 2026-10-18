@@ -6,7 +6,11 @@
       "Bash(sf project deploy validate:*)",
       "Bash(sf org display:*)"
     ],
-    "ask": ["Bash(sf project deploy start:*)"],
+    "ask": [
+      "Bash(sf project deploy start:*)",
+      "Bash(sf project deploy quick:*)",
+      "Bash(sf project deploy resume:*)"
+    ],
     "deny": [
       "Bash(sf org login:*)",
       "Bash(rm -rf:*)",
