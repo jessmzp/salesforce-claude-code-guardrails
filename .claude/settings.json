@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sf project retrieve start:*)",
+      "Bash(sf apex run test:*)",
+      "Bash(sf project deploy validate:*)",
+      "Bash(sf org display:*)"
+    ],
+    "ask": ["Bash(sf project deploy start:*)"],
+    "deny": [
+      "Bash(sf org login:*)",
+      "Bash(rm -rf:*)",
+      "Read(./.sf/**)",
+      "Read(./.sfdx/**)",
+      "Read(./.env)"
+    ]
+  }
+}
