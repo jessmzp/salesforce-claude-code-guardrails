@@ -8,7 +8,12 @@ A Salesforce DX project (source format) generated from the standard `sf project 
 
 ## Environment
 
-- Default org alias: `practice` (developer org, set in `.sf/config.json`). Never use any other org.
+- Two orgs are in use for the org-to-org migration practice:
+  - `legacy`: the **source** org (simulates an acquired company).
+  - `practice`: the **target** org and default org (developer org, set in `.sf/config.json`).
+- You may read from both orgs (queries, retrieves, describes).
+- Any write to either org (metadata deploy, data load, update or delete) must be done or approved by a human.
+- Never use any other org.
 
 ## Commands
 

@@ -6,7 +6,7 @@
         "-y",
         "@salesforce/mcp",
         "--orgs",
-        "practice",
+        "practice,legacy",
         "--toolsets",
         "orgs,data"
       ]

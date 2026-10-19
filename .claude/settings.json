@@ -5,7 +5,8 @@
       "Bash(sf project retrieve start:*)",
       "Bash(sf apex run test:*)",
       "Bash(sf project deploy validate:*)",
-      "Bash(sf org display:*)"
+      "Bash(sf org display:*)",
+      "Bash(sf data query:*)"
     ],
     "ask": [
       "Bash(sf project deploy start:*)",
@@ -13,7 +14,12 @@
       "Bash(sf project deploy resume:*)",
       "Bash(sf deploy metadata:*)",
       "Bash(sfdx force:source:deploy:*)",
-      "Bash(sfdx force:mdapi:deploy:*)"
+      "Bash(sfdx force:mdapi:deploy:*)",
+      "Bash(sf data import:*)",
+      "Bash(sf data upsert:*)",
+      "Bash(sf data update:*)",
+      "Bash(sf data delete:*)",
+      "Bash(sf data create:*)"
     ],
     "deny": [
       "Bash(sf org login:*)",
