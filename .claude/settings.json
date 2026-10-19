@@ -9,7 +9,10 @@
     "ask": [
       "Bash(sf project deploy start:*)",
       "Bash(sf project deploy quick:*)",
-      "Bash(sf project deploy resume:*)"
+      "Bash(sf project deploy resume:*)",
+      "Bash(sf deploy metadata:*)",
+      "Bash(sfdx force:source:deploy:*)",
+      "Bash(sfdx force:mdapi:deploy:*)"
     ],
     "deny": [
       "Bash(sf org login:*)",

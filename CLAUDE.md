@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-A Salesforce DX project (source format) generated from the standard `sf project generate` template. All metadata lives under `force-app/main/default/` in the conventional metadata-type folders (`classes`, `triggers`, `lwc`, `aura`, `objects`, `flexipages`, etc.); they are currently empty. Source API version is **64.0** (`sfdx-project.json`), with no namespace.
+A Salesforce DX project (source format) generated from the standard `sf project generate` template. All metadata lives under `force-app/main/default/` in the conventional metadata-type folders (`classes`, `triggers`, `lwc`, `aura`, `objects`, `flexipages`, etc.). The `classes` and `triggers` folders now contain the Opportunity automation: `OpportunityTrigger` (trigger), `OpportunityTriggerHandler` (handler class) and `OpportunityTriggerHandlerTest` (its Apex test class); the other folders are still empty. Source API version is **64.0** (`sfdx-project.json`), with no namespace.
 
 ## Environment
 
