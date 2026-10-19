@@ -45,6 +45,14 @@ A read-only reviewer (tools: Read, Grep, Glob) that runs after Apex changes. It 
 
 Husky runs lint-staged on commit: Prettier (with the Apex and XML plugins) on staged files, ESLint on staged Aura/LWC JavaScript, and related LWC Jest tests with `--bail`. A failing test blocks the commit.
 
+## MCP: Salesforce DX server
+
+`.mcp.json` registers the Salesforce DX MCP server (`@salesforce/mcp`) with a least-privilege setup:
+
+- **Only the `practice` org:** started with `--orgs practice`, so the server cannot reach any other authorized org.
+- **Only the `orgs` and `data` toolsets:** `--toolsets orgs,data` exposes org info and SOQL queries, and nothing for metadata, Apex, or deployment.
+- **Deny rule:** `mcp__salesforce-dx__resume_tool_operation` is in the `deny` list in `.claude/settings.json`, since resuming an operation could continue a long-running (for example deploy) job.
+
 ## Example: Closed Won onboarding trigger
 
 When an Opportunity becomes Closed Won (on insert, or on update from not-won to won), three Tasks are created for the Opportunity owner, due in 1, 3, and 7 days:
@@ -81,4 +89,5 @@ Deployment itself is done by a human after review.
 
 - **Deny rules apply in every mode.** `deny` rules in settings are enforced regardless of permission mode, so use them for anything that must never happen.
 - **The deploy quick gap.** I found that `sf project deploy quick` could deploy a previously validated package without being covered by the original guardrails. It is now in the `ask` rules and in the hook's blocked patterns.
+- **MCP tools don't go through the Bash hook.** The `block-deploy.sh` hook only matches `Bash` calls, so an MCP server can perform writes or deploys without it ever firing. Review every tool a server exposes and explicitly deny any write or deploy tool in `permissions.deny`.
 - **String-matching hooks can be bypassed.** The hook matches command text, so aliases, wrapper scripts, or other tools could get around it. Treat hooks and permissions as safety nets, not security boundaries: **never give agents production credentials**. Keep them on a disposable developer org.

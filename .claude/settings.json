@@ -1,5 +1,6 @@
 {
   "permissions": {
+    "defaultMode": "default",
     "allow": [
       "Bash(sf project retrieve start:*)",
       "Bash(sf apex run test:*)",
@@ -19,7 +20,8 @@
       "Bash(rm -rf:*)",
       "Read(./.sf/**)",
       "Read(./.sfdx/**)",
-      "Read(./.env)"
+      "Read(./.env)",
+      "mcp__salesforce-dx__resume_tool_operation"
     ]
   },
   "hooks": {
