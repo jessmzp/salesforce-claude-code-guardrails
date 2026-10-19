@@ -1,4 +1,6 @@
 public with sharing class OpportunityTriggerHandler {
+  private static final String BYPASS_PERMISSION = 'Bypass_Onboarding_Tasks';
+
   public static void afterInsert(List<Opportunity> newOpps) {
     createOnboardingTasks(newOpps, null);
   }
@@ -14,6 +16,10 @@ public with sharing class OpportunityTriggerHandler {
     List<Opportunity> newOpps,
     Map<Id, Opportunity> oldMap
   ) {
+    if (FeatureManagement.checkPermission(BYPASS_PERMISSION)) {
+      return;
+    }
+
     List<Task> tasks = new List<Task>();
 
     for (Opportunity opp : newOpps) {

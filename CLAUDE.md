@@ -53,6 +53,7 @@ sf data query -f scripts/soql/account.soql
 - Propose a plan and wait for approval before writing code.
 - Never run `sf project deploy start`. A human deploys after review.
 - If a field or object is not found, stop and ask.
+- Create and edit files only with the Write and Edit tools, never through Bash heredocs, so every change can be reviewed as a diff. Bash is only for running commands.
 
 ## Tooling notes
 

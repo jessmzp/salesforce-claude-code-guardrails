@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Legacy_Sales_Rep_Email__c</fullName>
+    <description
+  >Sales rep email from the legacy org, kept for later owner reassignment.</description>
+    <label>Legacy Sales Rep Email</label>
+    <required>false</required>
+    <type>Email</type>
+    <unique>false</unique>
+</CustomField>

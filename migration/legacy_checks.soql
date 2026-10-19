@@ -1,0 +1,8 @@
+SELECT COUNT() FROM Customer__c
+SELECT COUNT() FROM Deal__c
+SELECT Status__c, COUNT(Id) FROM Customer__c GROUP BY Status__c
+SELECT Country__c, COUNT(Id) FROM Customer__c GROUP BY Country__c
+SELECT Stage__c, COUNT(Id) FROM Deal__c GROUP BY Stage__c
+SELECT Email__c, COUNT(Id) FROM Customer__c GROUP BY Email__c HAVING COUNT(Id) > 1
+SELECT Legacy_Id__c, Full_Name__c FROM Customer__c WHERE Email__c = null
+SELECT Customer__r.Legacy_Id__c, COUNT(Id) FROM Deal__c GROUP BY Customer__r.Legacy_Id__c

@@ -1,0 +1,31 @@
+Legacy_Id__c,Full_Name__c,Company_Name__c,Email__c,Phone__c,Country__c,Status__c,Customer_Since__c,Annual_Revenue__c,Sales_Rep_Email__c
+LEG-001,Carlos Mejia,Grupo Cuscatlan S.A. de C.V.,carlos.mejia@grupocuscatlan.example,+503 2222-3333,El Salvador,Activo,2015-01-01,"$1,200,000",rep.ana@legacyco.example
+LEG-002,Ana Herrera,Textiles del Pacifico,ana.herrera@textilespacifico.example,7000-1234,SV,active,08/06/2018,850K,rep.luis@legacyco.example
+LEG-003,Roberto Alvarado,Cafe Santa Tecla,roberto.alvarado@cafesantatecla.example,50370001234,el salvador,ACT,11/15/2021,2500000,rep.sofia@legacyco.example
+LEG-004,Maria Quintanilla,Distribuidora Apopa,maria.quintanilla@distapopa.example,555.123.4567,USA,Inactive,"Apr 22, 2015",,rep.diego@legacyco.example
+LEG-005,John Miller,Miller Logistics LLC,john.miller@millerlogistics.example,(555) 123-4567,United States,inactivo,2018,"USD 640,000",rep.ana@legacyco.example
+LEG-006,Sofia Ramirez,Ramirez Hermanos,sofia.ramirez@ramirezhnos.example,55-1234-5678,Mexico,Activo,2021-02-08,"$15,000,000",rep.luis@legacyco.example
+LEG-007,Jorge Castillo,Agroexport Centroamerica,jorge.castillo@agroexportca.example,+52 55 1234 5678,MX,active,15/07/2015,980K,rep.sofia@legacyco.example
+LEG-008,Laura Gomez,Gomez & Asociados,laura.gomez@gomezasoc.example,(503) 7777 8888,El Salvador,ACT,12/22/2018,1200000,rep.diego@legacyco.example
+LEG-009,David Johnson,Johnson Medical Supply,david.johnson@johnsonmed.example,+503 2222-3333,SV,Inactive,"May 1, 2021",850K,rep.ana@legacyco.example
+LEG-010,Patricia Flores,Flores Construcciones,patricia.flores@floresconst.example,7000-1234,el salvador,,2015,"USD 2,500,000",rep.luis@legacyco.example
+LEG-011,Miguel Torres,Torres Automotriz,miguel.torres@torresauto.example,(555) 123-4567,USA,Activo,2018-03-15,"$4,300,000",rep.sofia@legacyco.example
+LEG-012,Elena Martinez,Martinez Pharma,elena.martinez@martinezpharma.example,+1 555 123 4567,United States,active,22/08/2021,640K,rep.diego@legacyco.example
+LEG-013,Fernando Rivas,Rivas Seguridad,fernando.rivas@rivasseguridad.example,+52 55 1234 5678,Mexico,ACT,01/01/2015,15000000,rep.ana@legacyco.example
+LEG-014,Karen Smith,Smith Brothers Packaging,karen.smith@smithpackaging.example,55-1234-5678,MX,Inactive,"Jun 8, 2018",980K,rep.luis@legacyco.example
+LEG-015,Luis Hernandez,Hernandez Tech,Luis.Hernandez@hernandeztech.example,50370001234,El Salvador,inactivo,2021,"USD 1,200,000",rep.sofia@legacyco.example
+LEG-016,Gabriela Ortiz,Ortiz Alimentos,gabriela.ortiz@ortizalimentos.example,(503) 7777 8888,SV,Activo,2015-04-22,"$850,000",rep.diego@legacyco.example
+LEG-017,Ricardo Menendez,Menendez Energia,ricardo.menendez@menendezenergia.example,+503 2222-3333,el salvador,active,01/09/2018,2.5M,rep.ana@legacyco.example
+LEG-018,Daniela Lopez,Lopez Turismo,daniela.lopez@lopezturismo.example,+1 555 123 4567,USA,ACT,02/08/2021,4300000,rep.luis@legacyco.example
+LEG-019,Mark Davis,Davis Software Group,mark.davis@davissoftware.example,555.123.4567,United States,,"Jul 15, 2015",640K,rep.sofia@legacyco.example
+LEG-020,Claudia Santos,Santos Importaciones,claudia.santos@santosimport.example,55-1234-5678,Mexico,inactivo,2018,"USD 15,000,000",rep.diego@legacyco.example
+LEG-021,Andres Villalta,Villalta Plasticos,andres.villalta@villaltaplasticos.example,+52 55 1234 5678,MX,Activo,2021-05-01,"$980,000",rep.ana@legacyco.example
+LEG-022,Rebecca Wilson,Wilson Analytics,rebecca.wilson@wilsonanalytics.example,7000-1234,El Salvador,active,08/10/2015,,rep.luis@legacyco.example
+LEG-023,Hector Aguilar,Aguilar Metales,hector.aguilar@aguilarmetales.example,50370001234,SV,ACT,03/15/2018,850000,rep.sofia@legacyco.example
+LEG-024,Monica Reyes,Reyes Educacion,monica.reyes@reyeseducacion.example,(503) 7777 8888,el salvador,Inactive,"Aug 22, 2021",2.5M,rep.diego@legacyco.example
+LEG-025,Pablo Chavez,Chavez Refrigeracion,pablo.chavez@chavezrefri.example,555.123.4567,USA,inactivo,2015,"USD 4,300,000",rep.ana@legacyco.example
+LEG-026,J. Castillo,Agroexport Centroamerica,jorge.castillo@agroexportca.example,7000-1234,MX,inactivo,22/08/2021,980K,rep.sofia@legacyco.example
+LEG-027,"Martinez, Elena",Martinez Pharma,ELENA.MARTINEZ@MARTINEZPHARMA.example,50370001234,United States,inactivo,01/09/2018,640K,rep.diego@legacyco.example
+LEG-028,"Santos, Claudia",Santos Importaciones,claudia.santos@santosimport.example,(503) 7777 8888,Mexico,ACT,2015,"USD 15,000,000",rep.diego@legacyco.example
+LEG-029,Valeria Campos,Campos Servicios,,(503) 7777 8888,El Salvador,Activo,12/22/2018,1200000,rep.diego@legacyco.example
+LEG-030,T'Challa Udaku,Wakanda Design Group,tchalla@wakandadesign.example,000-0000,Wakanda,active,01/01/2015,15000000,rep.ana@legacyco.example

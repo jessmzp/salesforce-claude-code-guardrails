@@ -19,8 +19,77 @@ private class OpportunityTriggerHandlerTest {
     );
   }
 
+  private static final String BYPASS_PERMISSION = 'Bypass_Onboarding_Tasks';
+
+  private static List<Opportunity> buildOpps(String prefix, String stage) {
+    List<Opportunity> opps = new List<Opportunity>();
+    for (Integer i = 0; i < BULK_SIZE; i++) {
+      opps.add(buildOpp(prefix + i, stage));
+    }
+    return opps;
+  }
+
+  private static User createStandardUser(String alias, Boolean withBypass) {
+    return createUser(alias, 'Standard User', withBypass);
+  }
+
+  // Admin profile so it can edit the admin-owned @TestSetup Opportunities;
+  // it has no Migration_Load_User, so the bypass permission is never granted.
+  private static User createAdminControlUser() {
+    User controlUser = createUser('control', 'System Administrator', false);
+    System.runAs(controlUser) {
+      System.assertEquals(
+        false,
+        FeatureManagement.checkPermission(BYPASS_PERMISSION),
+        'Admin control user must not hold the bypass permission'
+      );
+    }
+    return controlUser;
+  }
+
+  private static User createUser(
+    String alias,
+    String profileName,
+    Boolean withBypass
+  ) {
+    Profile userProfile = [
+      SELECT Id
+      FROM Profile
+      WHERE Name = :profileName
+      LIMIT 1
+    ];
+    String uniqueKey = UUID.randomUUID().toString();
+    User u = new User(
+      Alias = alias,
+      Email = alias + uniqueKey + '@example.com',
+      EmailEncodingKey = 'UTF-8',
+      LastName = alias,
+      LanguageLocaleKey = 'en_US',
+      LocaleSidKey = 'en_US',
+      ProfileId = userProfile.Id,
+      TimeZoneSidKey = 'America/Los_Angeles',
+      UserName = alias + uniqueKey + '@example.com'
+    );
+    insert u;
+
+    if (withBypass) {
+      PermissionSet loadPermSet = [
+        SELECT Id
+        FROM PermissionSet
+        WHERE Name = 'Migration_Load_User'
+        LIMIT 1
+      ];
+      insert new PermissionSetAssignment(
+        AssigneeId = u.Id,
+        PermissionSetId = loadPermSet.Id
+      );
+    }
+    return u;
+  }
+
   @IsTest
   static void updateToClosedWonCreatesThreeTasks() {
+    User controlUser = createAdminControlUser();
     Opportunity opp = [
       SELECT Id, OwnerId
       FROM Opportunity
@@ -29,8 +98,10 @@ private class OpportunityTriggerHandlerTest {
     ];
 
     Test.startTest();
-    opp.StageName = 'Closed Won';
-    update opp;
+    System.runAs(controlUser) {
+      opp.StageName = 'Closed Won';
+      update opp;
+    }
     Test.stopTest();
 
     List<Task> tasks = [
@@ -81,10 +152,13 @@ private class OpportunityTriggerHandlerTest {
 
   @IsTest
   static void insertAsClosedWonCreatesThreeTasks() {
+    User controlUser = createAdminControlUser();
     Opportunity opp = buildOpp('Inserted Won', 'Closed Won');
 
     Test.startTest();
-    insert opp;
+    System.runAs(controlUser) {
+      insert opp;
+    }
     Test.stopTest();
 
     System.assertEquals(
@@ -96,6 +170,7 @@ private class OpportunityTriggerHandlerTest {
 
   @IsTest
   static void otherStageChangeCreatesNoTasks() {
+    User controlUser = createAdminControlUser();
     Opportunity opp = [
       SELECT Id
       FROM Opportunity
@@ -104,8 +179,10 @@ private class OpportunityTriggerHandlerTest {
     ];
 
     Test.startTest();
-    opp.StageName = 'Qualification';
-    update opp;
+    System.runAs(controlUser) {
+      opp.StageName = 'Qualification';
+      update opp;
+    }
     Test.stopTest();
 
     System.assertEquals(
@@ -117,18 +194,23 @@ private class OpportunityTriggerHandlerTest {
 
   @IsTest
   static void resavingClosedWonDoesNotDuplicateTasks() {
+    User controlUser = createAdminControlUser();
     Opportunity opp = [
       SELECT Id
       FROM Opportunity
       WHERE Name = 'Setup Opp 2'
       LIMIT 1
     ];
-    opp.StageName = 'Closed Won';
-    update opp;
+    System.runAs(controlUser) {
+      opp.StageName = 'Closed Won';
+      update opp;
+    }
 
     Test.startTest();
-    opp.Description = 'Updated after close';
-    update opp;
+    System.runAs(controlUser) {
+      opp.Description = 'Updated after close';
+      update opp;
+    }
     Test.stopTest();
 
     System.assertEquals(
@@ -140,6 +222,7 @@ private class OpportunityTriggerHandlerTest {
 
   @IsTest
   static void bulkClosedWonCreatesSixHundredTasks() {
+    User controlUser = createAdminControlUser();
     List<Opportunity> opps = [SELECT Id FROM Opportunity];
     System.assertEquals(
       BULK_SIZE,
@@ -151,7 +234,9 @@ private class OpportunityTriggerHandlerTest {
     }
 
     Test.startTest();
-    update opps;
+    System.runAs(controlUser) {
+      update opps;
+    }
     Test.stopTest();
 
     Map<Id, Integer> taskCounts = new Map<Id, Integer>();
@@ -175,33 +260,20 @@ private class OpportunityTriggerHandlerTest {
 
   @IsTest
   static void tasksAreAssignedToOpportunityOwnerNotCreator() {
-    Profile standard = [
-      SELECT Id
-      FROM Profile
-      WHERE Name = 'Standard User'
-      LIMIT 1
-    ];
-    String uniqueKey = String.valueOf(System.currentTimeMillis());
-    User otherOwner = new User(
-      Alias = 'othown',
-      Email = 'othown' + uniqueKey + '@example.com',
-      EmailEncodingKey = 'UTF-8',
-      LastName = 'Owner',
-      LanguageLocaleKey = 'en_US',
-      LocaleSidKey = 'en_US',
-      ProfileId = standard.Id,
-      TimeZoneSidKey = 'America/Los_Angeles',
-      UserName = 'othown' + uniqueKey + '@example.com'
-    );
-    insert otherOwner;
+    User controlUser = createAdminControlUser();
+    User otherOwner = createStandardUser('othown', false);
 
     Opportunity opp = buildOpp('Other Owner Opp', 'Prospecting');
     opp.OwnerId = otherOwner.Id;
-    insert opp;
+    System.runAs(controlUser) {
+      insert opp;
+    }
 
     Test.startTest();
-    opp.StageName = 'Closed Won';
-    update opp;
+    System.runAs(controlUser) {
+      opp.StageName = 'Closed Won';
+      update opp;
+    }
     Test.stopTest();
 
     List<Task> tasks = [SELECT OwnerId FROM Task WHERE WhatId = :opp.Id];
@@ -213,10 +285,219 @@ private class OpportunityTriggerHandlerTest {
         'Task owner should be the Opportunity owner'
       );
       System.assertNotEquals(
-        UserInfo.getUserId(),
+        controlUser.Id,
         t.OwnerId,
-        'Task owner should differ from the running user'
+        'Task owner should differ from the user who closed the Opportunity'
       );
     }
+  }
+
+  @IsTest
+  static void bypassPermissionComesOnlyFromMigrationPermissionSet() {
+    User bypassUser = createStandardUser('bypass', true);
+    User controlUser = createStandardUser('control', false);
+
+    System.runAs(bypassUser) {
+      System.assertEquals(
+        true,
+        FeatureManagement.checkPermission(BYPASS_PERMISSION),
+        'User with Migration_Load_User should have the bypass permission'
+      );
+    }
+    System.runAs(controlUser) {
+      System.assertEquals(
+        false,
+        FeatureManagement.checkPermission(BYPASS_PERMISSION),
+        'User without the permission set must not have the bypass permission'
+      );
+    }
+  }
+
+  @IsTest
+  static void bypassUserInsertAsClosedWonCreatesNoTasks() {
+    User bypassUser = createStandardUser('bypass', true);
+    Opportunity opp = buildOpp('Bypass Inserted Won', 'Closed Won');
+
+    Test.startTest();
+    System.runAs(bypassUser) {
+      insert opp;
+    }
+    Test.stopTest();
+
+    System.assertEquals(
+      1,
+      [SELECT COUNT() FROM Opportunity WHERE Id = :opp.Id AND IsWon = TRUE],
+      'Opportunity should still be saved as won'
+    );
+    System.assertEquals(
+      0,
+      [SELECT COUNT() FROM Task WHERE WhatId = :opp.Id],
+      'Bypass user must not create onboarding tasks on insert'
+    );
+  }
+
+  @IsTest
+  static void bypassUserUpdateToClosedWonCreatesNoTasks() {
+    User bypassUser = createStandardUser('bypass', true);
+    Opportunity opp = buildOpp('Bypass Updated Won', 'Prospecting');
+    System.runAs(bypassUser) {
+      insert opp;
+    }
+
+    Test.startTest();
+    System.runAs(bypassUser) {
+      opp.StageName = 'Closed Won';
+      update opp;
+    }
+    Test.stopTest();
+
+    System.assertEquals(
+      1,
+      [SELECT COUNT() FROM Opportunity WHERE Id = :opp.Id AND IsWon = TRUE],
+      'Opportunity should be won after the update'
+    );
+    System.assertEquals(
+      0,
+      [SELECT COUNT() FROM Task WHERE WhatId = :opp.Id],
+      'Bypass user must not create onboarding tasks on update'
+    );
+  }
+
+  @IsTest
+  static void bypassUserBulkInsertAsClosedWonCreatesNoTasks() {
+    User bypassUser = createStandardUser('bypass', true);
+    List<Opportunity> opps = buildOpps('Bypass Bulk Insert ', 'Closed Won');
+
+    Test.startTest();
+    System.runAs(bypassUser) {
+      insert opps;
+    }
+    Test.stopTest();
+
+    System.assertEquals(
+      BULK_SIZE,
+      [SELECT COUNT() FROM Opportunity WHERE Id IN :opps AND IsWon = TRUE],
+      'All 200 Opportunities should be saved as won'
+    );
+    System.assertEquals(
+      0,
+      [SELECT COUNT() FROM Task WHERE WhatId IN :opps],
+      'Bypass user must not create tasks for a 200-record insert'
+    );
+  }
+
+  @IsTest
+  static void bypassUserBulkUpdateToClosedWonCreatesNoTasks() {
+    User bypassUser = createStandardUser('bypass', true);
+    List<Opportunity> opps = buildOpps('Bypass Bulk Update ', 'Prospecting');
+    System.runAs(bypassUser) {
+      insert opps;
+    }
+    for (Opportunity opp : opps) {
+      opp.StageName = 'Closed Won';
+    }
+
+    Test.startTest();
+    System.runAs(bypassUser) {
+      update opps;
+    }
+    Test.stopTest();
+
+    System.assertEquals(
+      BULK_SIZE,
+      [SELECT COUNT() FROM Opportunity WHERE Id IN :opps AND IsWon = TRUE],
+      'All 200 Opportunities should be won after the update'
+    );
+    System.assertEquals(
+      0,
+      [SELECT COUNT() FROM Task WHERE WhatId IN :opps],
+      'Bypass user must not create tasks for a 200-record update'
+    );
+  }
+
+  @IsTest
+  static void userWithoutBypassStillGetsThreeTasksPerWonOpportunity() {
+    User controlUser = createStandardUser('control', false);
+    Opportunity opp = buildOpp('Control Inserted Won', 'Closed Won');
+
+    Test.startTest();
+    System.runAs(controlUser) {
+      insert opp;
+    }
+    Test.stopTest();
+
+    System.assertEquals(
+      3,
+      [SELECT COUNT() FROM Task WHERE WhatId = :opp.Id],
+      'User without the bypass permission should still get three tasks'
+    );
+  }
+
+  @IsTest
+  static void userWithoutBypassUpdateToClosedWonCreatesThreeTasks() {
+    User controlUser = createStandardUser('control', false);
+    Opportunity opp = buildOpp('Control Updated Won', 'Prospecting');
+    System.runAs(controlUser) {
+      insert opp;
+    }
+
+    Test.startTest();
+    System.runAs(controlUser) {
+      opp.StageName = 'Closed Won';
+      update opp;
+    }
+    Test.stopTest();
+
+    System.assertEquals(
+      3,
+      [SELECT COUNT() FROM Task WHERE WhatId = :opp.Id],
+      'User without the bypass permission should get three tasks on update'
+    );
+  }
+
+  @IsTest
+  static void userWithoutBypassBulkInsertCreatesSixHundredTasks() {
+    User controlUser = createStandardUser('control', false);
+    List<Opportunity> opps = buildOpps('Control Bulk Insert ', 'Closed Won');
+
+    Test.startTest();
+    System.runAs(controlUser) {
+      insert opps;
+    }
+    Test.stopTest();
+
+    System.assertEquals(
+      BULK_SIZE * 3,
+      [SELECT COUNT() FROM Task WHERE WhatId IN :opps],
+      'Three tasks per Opportunity expected for a 200-record insert'
+    );
+  }
+
+  @IsTest
+  static void bypassDoesNotAffectOtherUsersInTheSameTransaction() {
+    User bypassUser = createStandardUser('bypass', true);
+    User controlUser = createStandardUser('control', false);
+    Opportunity bypassOpp = buildOpp('Bypass Load Opp', 'Closed Won');
+    Opportunity controlOpp = buildOpp('Control Live Opp', 'Closed Won');
+
+    Test.startTest();
+    System.runAs(bypassUser) {
+      insert bypassOpp;
+    }
+    System.runAs(controlUser) {
+      insert controlOpp;
+    }
+    Test.stopTest();
+
+    System.assertEquals(
+      0,
+      [SELECT COUNT() FROM Task WHERE WhatId = :bypassOpp.Id],
+      'Bypassed load must create no tasks'
+    );
+    System.assertEquals(
+      3,
+      [SELECT COUNT() FROM Task WHERE WhatId = :controlOpp.Id],
+      'A normal user after a bypassed load must still get three tasks'
+    );
   }
 }

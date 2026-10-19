@@ -1,0 +1,114 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "AccountRef3"
+      },
+      "Name": "Cafe Santa Tecla",
+      "Description": "MIG-PRACTICE-SEED",
+      "Contacts": {
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "referenceId": "ContactRef3"
+            },
+            "FirstName": "Roberto",
+            "LastName": "Alvarado",
+            "Email": "roberto.alvarado@cafesantatecla.example",
+            "Description": "MIG-PRACTICE-SEED"
+          }
+        ]
+      }
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "AccountRef7"
+      },
+      "Name": "Agroexport Centroamerica SA",
+      "Description": "MIG-PRACTICE-SEED",
+      "Contacts": {
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "referenceId": "ContactRef7"
+            },
+            "FirstName": "Jorge",
+            "LastName": "Castillo",
+            "Email": "jorge.castillo@agroexportca.example",
+            "Description": "MIG-PRACTICE-SEED"
+          }
+        ]
+      }
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "AccountRef11"
+      },
+      "Name": "Torres Automotriz S.A.",
+      "Description": "MIG-PRACTICE-SEED",
+      "Contacts": {
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "referenceId": "ContactRef11"
+            },
+            "FirstName": "Miguel",
+            "LastName": "Torres",
+            "Email": "miguel.torres@torresauto.example",
+            "Description": "MIG-PRACTICE-SEED"
+          }
+        ]
+      }
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "AccountRef15"
+      },
+      "Name": "Hernandez Tech",
+      "Description": "MIG-PRACTICE-SEED",
+      "Contacts": {
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "referenceId": "ContactRef15"
+            },
+            "FirstName": "Luis",
+            "LastName": "Hernandez",
+            "Email": "luis.hernandez@hernandeztech.example",
+            "Description": "MIG-PRACTICE-SEED"
+          }
+        ]
+      }
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "AccountRef19"
+      },
+      "Name": "Davis Software Group",
+      "Description": "MIG-PRACTICE-SEED",
+      "Contacts": {
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "referenceId": "ContactRef19"
+            },
+            "FirstName": "Mark",
+            "LastName": "Davis",
+            "Email": "mark.davis@davissoftware.example",
+            "Description": "MIG-PRACTICE-SEED"
+          }
+        ]
+      }
+    }
+  ]
+}
